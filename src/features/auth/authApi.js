@@ -23,7 +23,19 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				body: { token },
 			}),
 		}),
+		signInWithSSO: builder.mutation({
+			query: ({ provider, code }) => ({
+				url: `auth/sso/${provider}/sign-in`,
+				method: 'POST',
+				body: { code },
+			}),
+		}),
 	}),
 })
 
-export const { useSignInMutation, useSignUpMutation, useVerifyEmailMutation } = authApiSlice
+export const {
+	useSignInMutation,
+	useSignUpMutation,
+	useVerifyEmailMutation,
+	useSignInWithSSOMutation,
+} = authApiSlice
