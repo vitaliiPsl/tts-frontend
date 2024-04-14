@@ -16,6 +16,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				body: user,
 			}),
 		}),
+		signInWithSSO: builder.mutation({
+			query: ({ provider, code }) => ({
+				url: `auth/sso/${provider}/sign-in`,
+				method: 'POST',
+				body: { code },
+			}),
+		}),
 		verifyEmail: builder.mutation({
 			query: (token) => ({
 				url: '/auth/verify-email',
@@ -23,11 +30,18 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				body: { token },
 			}),
 		}),
-		signInWithSSO: builder.mutation({
-			query: ({ provider, code }) => ({
-				url: `auth/sso/${provider}/sign-in`,
-				method: 'POST',
-				body: { code },
+		resetPassword: builder.mutation({
+			query: (payload) => ({
+				url: '/auth/reset-password',
+				method: 'post',
+				body: payload,
+			}),
+		}),
+		sendPasswordResetEmail: builder.mutation({
+			query: (email) => ({
+				url: '/auth/send-password-reset-email',
+				method: 'post',
+				body: { email },
 			}),
 		}),
 	}),
@@ -38,4 +52,6 @@ export const {
 	useSignUpMutation,
 	useVerifyEmailMutation,
 	useSignInWithSSOMutation,
+	useResetPasswordMutation,
+	useSendPasswordResetEmailMutation,
 } = authApiSlice
