@@ -10,6 +10,8 @@ import EmailVerificationCallback from './pages/auth/EmailVerificationCallback'
 import PasswordReset from './pages/auth/PasswordReset'
 import PasswordResetRequest from './pages/auth/PasswordResetRequest'
 
+import NotFound from './pages/NotFound'
+
 const App = () => {
 	return (
 		<div className='App'>
@@ -36,6 +38,8 @@ const App = () => {
 						element={<PasswordResetRequest />}
 					/>
 				</Route>
+
+				<Route path='*' element={<NotFound />} />
 			</Routes>
 		</div>
 	)
