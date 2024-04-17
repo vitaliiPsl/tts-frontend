@@ -9,7 +9,7 @@ import { MdMenu, MdClose } from 'react-icons/md'
 const Header = () => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-    const auth = useSelector((state) => state.auth)
+	const auth = useSelector((state) => state.auth)
 	const dispatch = useDispatch()
 
 	const handleLogout = () => {
@@ -46,6 +46,12 @@ const Header = () => {
 									className='text-white hover:text-accent transition duration-300'
 								>
 									Home
+								</Link>
+								<Link
+									to='/history'
+									className='text-white hover:text-accent transition duration-300'
+								>
+									History
 								</Link>
 								<Link
 									to='#'
@@ -86,7 +92,14 @@ const Header = () => {
 								Home
 							</Link>
 							<Link
+								to='/history'
+								className='text-white hover:text-accent transition duration-300'
+							>
+								History
+							</Link>
+							<Link
 								to='#'
+								onClick={handleLogout}
 								className='text-white hover:text-accent transition duration-300'
 							>
 								Log out
