@@ -11,6 +11,7 @@ import PasswordReset from './pages/auth/PasswordReset'
 import PasswordResetRequest from './pages/auth/PasswordResetRequest'
 
 import NotFound from './pages/NotFound'
+import SynthesisPage from './pages/SynthesisPage'
 import HistoryPage from './pages/HistoryPage'
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
 			<Routes>
 				<Route path='/' element={<Index />} />
 
+				<Route path='/synthesis' element={<SynthesisPage />} />
 				<Route path='/history' element={<HistoryPage />} />
 
 				<Route path='/auth'>

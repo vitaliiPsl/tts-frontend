@@ -42,10 +42,10 @@ const Header = () => {
 						{auth && auth.token ? (
 							<>
 								<Link
-									to='/'
+									to='/synthesis'
 									className='text-white hover:text-accent transition duration-300'
 								>
-									Home
+									Synthesis
 								</Link>
 								<Link
 									to='/history'
@@ -86,10 +86,10 @@ const Header = () => {
 					{auth && auth.token ? (
 						<>
 							<Link
-								to='/'
+								to='/synthesis'
 								className='text-white hover:text-accent transition duration-300'
 							>
-								Home
+								Synthesis
 							</Link>
 							<Link
 								to='/history'
