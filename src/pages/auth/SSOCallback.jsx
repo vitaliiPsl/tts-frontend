@@ -39,7 +39,7 @@ const SSOCallback = () => {
 		try {
 			let data = await signInWithSSO({ provider, code }).unwrap()
 
-			let token = data?.token
+            let token = data?.token
 			dispatch(setToken(token))
 
 			navigate('/')
