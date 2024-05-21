@@ -8,7 +8,7 @@ const AudioVisualizer = ({ samples, options = [] }) => {
 		waveformColor: 'black',
 		playedWaveformColor: 'orange',
 
-		barWidth: 2,
+		barWidth: 1,
 		barSpacing: 1,
 
 		...options,
@@ -85,7 +85,7 @@ const AudioVisualizer = ({ samples, options = [] }) => {
 	return (
 		<canvas
 			ref={canvasRef}
-			className='w-full h-16 border border-gray-200'
+			className='w-full h-16 border border-gray-200 rounded-md'
 		></canvas>
 	)
 }

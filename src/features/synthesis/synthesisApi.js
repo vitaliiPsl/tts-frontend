@@ -3,10 +3,10 @@ import { apiSlice } from '../../app/api'
 export const synthesisApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		synthesize: builder.mutation({
-			query: (text) => ({
+			query: ({text, modelId}) => ({
 				url: '/synthesis',
 				method: 'post',
-				body: { text },
+				body: { text, modelId },
 			}),
 		}),
 	}),

@@ -1,76 +1,104 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { WaveFile } from 'wavefile'
 
-import { IoPlayCircleOutline, IoDownloadOutline } from 'react-icons/io5'
+import {
+    IoPlayCircleOutline,
+    IoPauseCircleOutline,
+    IoDownloadOutline,
+} from 'react-icons/io5'
 import AudioVisualizer from './AudioVisualizer'
 
 const Audio = ({ samples, sampleRate }) => {
-	const [audioContext, setAudioContext] = useState(null)
+    const [playing, setPlaying] = useState(false)
+    const audioContextRef = useRef(null)
+    const sourceRef = useRef(null)
 
-	useEffect(() => {
-		setAudioContext(new AudioContext())
-	}, [])
+    useEffect(() => {
+        audioContextRef.current = new AudioContext()
+        return () => {
+            if (audioContextRef.current) {
+                audioContextRef.current.close()
+            }
+        }
+    }, [])
 
-	const playAudio = () => {
-		if (audioContext && !audioContext.resume()) {
-			audioContext.resume()
-		}
+    const playAudio = () => {
+        if (audioContextRef.current.state === 'suspended') {
+            audioContextRef.current.resume()
+        }
 
-		const audioBuffer = audioContext.createBuffer(
-			1,
-			samples.length,
-			sampleRate
-		)
-		const channelData = audioBuffer.getChannelData(0)
-		channelData.set(samples)
+        const audioBuffer = audioContextRef.current.createBuffer(1, samples.length, sampleRate)
+        const channelData = audioBuffer.getChannelData(0)
+        channelData.set(samples)
 
-		const source = audioContext.createBufferSource()
-		source.buffer = audioBuffer
-		source.connect(audioContext.destination)
-		source.start()
-	}
+        sourceRef.current = audioContextRef.current.createBufferSource()
+        sourceRef.current.buffer = audioBuffer
+        sourceRef.current.connect(audioContextRef.current.destination)
+        sourceRef.current.start()
+        sourceRef.current.onended = () => {
+            setPlaying(false);
+            sourceRef.current = null; // Nullify the reference to allow garbage collection and future reinitialization
+        }
+    }
 
-	const saveAsWav = () => {
-		let wav = new WaveFile()
-		const data = new Int16Array(samples.map((n) => n * 32767))
+    const togglePlayPause = () => {
+        if (!audioContextRef.current) return;
 
-		wav.fromScratch(1, 22050, '16', data)
+        if (!playing) {
+            if (!sourceRef.current) {
+                playAudio();
+            } else {
+                audioContextRef.current.resume();
+            }
+        } else {
+            audioContextRef.current.suspend();
+        }
 
-		const blob = new Blob([wav.toBuffer()], { type: 'audio/wav' })
-		const url = URL.createObjectURL(blob)
+        setPlaying(!playing);
+    }
 
-		const anchor = document.createElement('a')
-		anchor.href = url
-		anchor.download = 'output.wav'
+    const saveAsWav = () => {
+        let wav = new WaveFile()
+        const data = new Int16Array(samples.map((n) => n * 32767))
 
-		document.body.appendChild(anchor)
-		anchor.click()
-		document.body.removeChild(anchor)
+        wav.fromScratch(1, 22050, '16', data)
 
-		URL.revokeObjectURL(url)
-	}
+        const blob = new Blob([wav.toBuffer()], { type: 'audio/wav' })
+        const url = URL.createObjectURL(blob)
 
-	return (
-		<div className='flex content-center items-center gap-3'>
-			<button
-				onClick={playAudio}
-				className='bg-primary p-1 rounded-md flex items-center justify-center duration-100 hover:bg-accent'
-				aria-label='Play audio'
-			>
-				<IoPlayCircleOutline className='text-primary-text text-4xl' />
-			</button>
+        const anchor = document.createElement('a')
+        anchor.href = url
+        anchor.download = 'output.wav'
 
-			<AudioVisualizer samples={samples} />
+        document.body.appendChild(anchor)
+        anchor.click()
+        document.body.removeChild(anchor)
 
-			<button
-				onClick={saveAsWav}
-				className='bg-primary p-1 rounded-md flex items-center justify-center duration-100 hover:bg-accent'
-				aria-label='Play audio'
-			>
-				<IoDownloadOutline className='text-primary-text text-4xl' />
-			</button>
-		</div>
-	)
+        URL.revokeObjectURL(url)
+    }
+
+    return (
+        <div className='flex content-center items-center gap-3'>
+            <button
+                onClick={togglePlayPause}
+                className='bg-primary p-1 rounded-md flex items-center justify-center duration-100 hover:bg-accent'
+                aria-label={playing ? 'Pause audio' : 'Play audio'}
+            >
+                {playing ? <IoPauseCircleOutline className='text-primary-text text-4xl' />
+                         : <IoPlayCircleOutline className='text-primary-text text-4xl' />}
+            </button>
+
+            <AudioVisualizer samples={samples} />
+
+            <button
+                onClick={saveAsWav}
+                className='bg-primary p-1 rounded-md flex items-center justify-center duration-100 hover:bg-accent'
+                aria-label='Download audio'
+            >
+                <IoDownloadOutline className='text-primary-text text-4xl' />
+            </button>
+        </div>
+    )
 }
 
 export default Audio
