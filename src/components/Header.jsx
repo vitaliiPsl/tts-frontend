@@ -9,7 +9,7 @@ import { MdMenu, MdClose } from 'react-icons/md'
 const Header = () => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-	const auth = useSelector((state) => state.auth)
+	const user = useSelector((state) => state.auth.user)
 	const dispatch = useDispatch()
 
 	const handleLogout = () => {
@@ -39,14 +39,73 @@ const Header = () => {
 					</button>
 
 					<div className='links hidden lg:flex items-center justify-between gap-8'>
-						{auth && auth.token ? (
+						<>
+							<Link
+								to='/synthesis'
+								className='text-white hover:text-accent transition duration-300'
+							>
+								Synthesis
+							</Link>
+
+							{user ? (
+								<>
+									<Link
+										to='/history'
+										className='text-white hover:text-accent transition duration-300'
+									>
+										History
+									</Link>
+
+									{user.role === 'Admin' && (
+										<Link
+											to='/admin/models'
+											className='text-white hover:text-accent transition duration-300'
+										>
+											Models
+										</Link>
+									)}
+
+									<Link
+										to='#'
+										onClick={handleLogout}
+										className='text-white hover:text-accent transition duration-300'
+									>
+										Log out
+									</Link>
+								</>
+							) : (
+								<>
+									<Link
+										to='/auth/signin'
+										className='text-white hover:text-accent transition duration-300'
+									>
+										Sign In
+									</Link>
+									<Link
+										to='/auth/signup'
+										className='text-white hover:text-accent transition duration-300'
+									>
+										Sign Up
+									</Link>
+								</>
+							)}
+						</>
+					</div>
+				</div>
+			</nav>
+
+			{isMobileMenuOpen && (
+				<div className='burger-menu absolute top-full left-0 w-full z-50 bg-primary text-white lg:hidden flex flex-col justify-center gap-4 py-4 text-center'>
+					<>
+						<Link
+							to='/synthesis'
+							className='text-white hover:text-accent transition duration-300'
+						>
+							Synthesis
+						</Link>
+                        
+						{user ? (
 							<>
-								<Link
-									to='/synthesis'
-									className='text-white hover:text-accent transition duration-300'
-								>
-									Synthesis
-								</Link>
 								<Link
 									to='/history'
 									className='text-white hover:text-accent transition duration-300'
@@ -77,50 +136,7 @@ const Header = () => {
 								</Link>
 							</>
 						)}
-					</div>
-				</div>
-			</nav>
-
-			{isMobileMenuOpen && (
-				<div className='burger-menu absolute top-full left-0 w-full z-50 bg-primary text-white lg:hidden flex flex-col justify-center gap-4 py-4 text-center'>
-					{auth && auth.token ? (
-						<>
-							<Link
-								to='/synthesis'
-								className='text-white hover:text-accent transition duration-300'
-							>
-								Synthesis
-							</Link>
-							<Link
-								to='/history'
-								className='text-white hover:text-accent transition duration-300'
-							>
-								History
-							</Link>
-							<Link
-								to='#'
-								onClick={handleLogout}
-								className='text-white hover:text-accent transition duration-300'
-							>
-								Log out
-							</Link>
-						</>
-					) : (
-						<>
-							<Link
-								to='/auth/signin'
-								className='text-white hover:text-accent transition duration-300'
-							>
-								Sign In
-							</Link>
-							<Link
-								to='/auth/signup'
-								className='text-white hover:text-accent transition duration-300'
-							>
-								Sign Up
-							</Link>
-						</>
-					)}
+					</>
 				</div>
 			)}
 		</header>

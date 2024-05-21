@@ -2,6 +2,9 @@ import { apiSlice } from '../../app/api'
 
 export const authApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
+		loadUser: builder.query({
+			query: (page) => `/auth/me`,
+		}),
 		signIn: builder.mutation({
 			query: (credentials) => ({
 				url: '/auth/sign-in',
@@ -48,6 +51,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
+	useLoadUserQuery,
 	useSignInMutation,
 	useSignUpMutation,
 	useVerifyEmailMutation,
