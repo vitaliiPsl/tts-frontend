@@ -1,11 +1,30 @@
 import { apiSlice } from '../../app/api'
 
-export const synthesisApiSlice = apiSlice.injectEndpoints({
+export const historyApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
 		loadHistory: builder.query({
 			query: (page) => `/history?page=${page}`,
+			providesTags: ['History'],
+		}),
+		deleteHistory: builder.mutation({
+			query: () => ({
+				url: `/history`,
+				method: 'delete',
+			}),
+			invalidatesTags: ['History'],
+		}),
+		deleteHistoryRecord: builder.mutation({
+			query: (id) => ({
+				url: `/history/${id}`,
+				method: 'delete',
+			}),
+			invalidatesTags: ['History'],
 		}),
 	}),
 })
 
-export const { useLoadHistoryQuery } = synthesisApiSlice
+export const {
+	useLoadHistoryQuery,
+	useDeleteHistoryMutation,
+	useDeleteHistoryRecordMutation,
+} = historyApiSlice

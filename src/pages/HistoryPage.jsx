@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useLoadHistoryQuery } from '../features/history/historyApi'
+import {
+	useDeleteHistoryMutation,
+	useDeleteHistoryRecordMutation,
+	useLoadHistoryQuery,
+} from '../features/history/historyApi'
 
 import Layout from '../components/Layout'
 import HistoryRecord from '../components/HistoryRecord'
@@ -9,8 +13,11 @@ const HistoryPage = () => {
 	const [records, setRecords] = useState([])
 	const [hasMore, setHasMore] = useState(true)
 
-	const { data, error, isLoading, isSuccess } =
+	const { data, error, isLoading, isSuccess, refetch } =
 		useLoadHistoryQuery(currentPage)
+
+	const [deleteHistoryMutation] = useDeleteHistoryMutation()
+	const [deleteHistoryRecordMutation] = useDeleteHistoryRecordMutation()
 
 	useEffect(() => {
 		if (data) {
@@ -25,9 +32,44 @@ const HistoryPage = () => {
 		}
 	}
 
+	const handleDeleteHistory = async (id) => {
+		if (!window.confirm('Are you sure you want to delete history?')) {
+			return
+		}
+
+		try {
+			await deleteHistoryMutation().unwrap()
+			refetch()
+		} catch (err) {
+			console.log(
+				'Something went wrong while deleting history. Please, try again later'
+			)
+		}
+	}
+
+	const handleDeleteHistoryRecord = async (id) => {
+		if (
+			!window.confirm(
+				'Are you sure you want to delete this history record?'
+			)
+		) {
+			return
+		}
+
+		try {
+			await deleteHistoryRecordMutation(id).unwrap()
+			setRecords([])
+			refetch()
+		} catch (err) {
+			console.log(
+				'Something went wrong while deleting history record. Please, try again later'
+			)
+		}
+	}
+
 	return (
 		<Layout>
-			<div className='flex-1 flex flex-col items-center justify-center gap-6 bg-background p-4'>
+			<div className='overflow-y-auto flex-1 flex flex-col items-center justify-center gap-6 bg-background p-4'>
 				<h2 className='text-2xl font-semibold text-primary'>
 					Synthesis History
 				</h2>
@@ -59,11 +101,17 @@ const HistoryPage = () => {
 
 					{records && records.length > 0 && (
 						<>
-							<ul className='divide-y divide-gray-200'>
+							<div className='flex flex-col gap-4'>
 								{records.map((item, idx) => (
-									<HistoryRecord record={item} key={idx} />
+									<HistoryRecord
+										key={idx}
+										record={item}
+										onDeleteClick={() =>
+											handleDeleteHistoryRecord(item.id)
+										}
+									/>
 								))}
-							</ul>
+							</div>
 
 							<div className='flex flex-col justify-between items-center gap-4 mt-4'>
 								<span className='text-sm font-medium text-gray-500'>
