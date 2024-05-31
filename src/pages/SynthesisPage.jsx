@@ -6,10 +6,13 @@ import { useSynthesizeMutation } from '../features/synthesis/synthesisApi'
 import { useLocation } from 'react-router-dom'
 import { useLoadModelsQuery } from '../features/models/modelsApi'
 
+import { useTranslation } from 'react-i18next'
+
 import Layout from '../components/Layout'
 import Audio from '../components/audio/Audio'
 
 const SynthesisPage = () => {
+	const { t } = useTranslation()
 	const location = useLocation()
 	const [text, setText] = useState('')
 	const [modelId, setModelId] = useState(null)
@@ -71,14 +74,14 @@ const SynthesisPage = () => {
 				{/* Model selection list */}
 				<div className='max-w-3xl w-full text-center flex flex-col gap-3'>
 					<h2 className='text-2xl font-semibold text-primary'>
-						Available models
+						{t('available_models')}
 					</h2>
 
 					<div className='flex items-center gap-4 flex-wrap'>
 						{modelsLoading && (
 							<div className='w-full text-center py-4'>
 								<p className='text-lg text-gray-500'>
-									Loading models...
+									{t('loading_models')}
 								</p>
 							</div>
 						)}
@@ -86,8 +89,7 @@ const SynthesisPage = () => {
 						{modelsError && (
 							<div className='w-full text-center py-4'>
 								<p className='text-lg text-gray-500'>
-									Something went wrong while loading models.
-									Please, try again later.
+									{t('loading_models_error')}
 								</p>
 							</div>
 						)}
@@ -95,7 +97,7 @@ const SynthesisPage = () => {
 						{modelsLoaded && (!models || models.length === 0) && (
 							<div className='w-full text-center py-4'>
 								<p className='text-lg text-gray-500'>
-									No available models at the moment
+									{t('no_models')}
 								</p>
 							</div>
 						)}
@@ -128,7 +130,7 @@ const SynthesisPage = () => {
 								htmlFor='text-field'
 								className='block text-lg font-medium text-gray-700'
 							>
-								Enter Text for Synthesis
+								{t('enter_text')}
 							</label>
 
 							{/* text input */}
@@ -138,7 +140,7 @@ const SynthesisPage = () => {
 								value={text}
 								rows='6'
 								required
-								placeholder='Type something...'
+								placeholder={t('text_placeholder')}
 								onChange={(e) => setText(e.target.value)}
 								className='mt-1 p-2 w-full border border-secondary rounded-md focus:border-accent focus:ring-accent outline-accent'
 							></textarea>
@@ -150,8 +152,8 @@ const SynthesisPage = () => {
 									className='w-full flex justify-center min-w-28 py-2 px-4 border border-transparent text-md font-medium rounded-md text-white bg-primary hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent'
 								>
 									{synthesisLoading
-										? 'Cooking...'
-										: 'Synthesize'}
+										? t('cooking')
+										: t('synthesize_button')}
 								</button>
 							</div>
 						</form>
@@ -161,7 +163,7 @@ const SynthesisPage = () => {
 				{synthesisError && (
 					<div className='text-center py-10'>
 						<p className='text-lg text-gray-500'>
-							Something went wrong. Please, try again later.
+							{t('synthesis_error')}
 						</p>
 					</div>
 				)}

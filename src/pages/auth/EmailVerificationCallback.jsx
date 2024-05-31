@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import Layout from '../../components/Layout'
 import { useVerifyEmailMutation } from '../../features/auth/authApi'
 
 const EmailVerificationCallback = () => {
+	const { t } = useTranslation()
+
 	const auth = useSelector((state) => state.auth)
 	const [error, setError] = useState('')
 
@@ -33,7 +36,7 @@ const EmailVerificationCallback = () => {
 			await verifyEmail(token).unwrap()
 			navigate('/auth/signin')
 		} catch (err) {
-			setError('Failed to verify email. Please, try again later')
+			setError(t('email_verification_callback_page.email_verification_error'))
 		}
 	}
 
@@ -50,11 +53,9 @@ const EmailVerificationCallback = () => {
 				<div className='w-full xl:w-1/2 p-4 flex items-center justify-center'>
 					<div className='max-w-md w-full space-y-8'>
 						<h2 className='text-center text-3xl font-extrabold text-secondary-gray'>
-							Verify email
+							{t('email_verification_callback_page.verify_email')}
 						</h2>
-						<p className='text-center'>
-							Verifying your email, plese wait ...
-						</p>
+						<p className='text-center'>{t('email_verification_callback_page.verifying_email')}</p>
 						<div className='text-center p-2'>
 							{error && (
 								<p className='text-sm text-red-600'>{error}</p>

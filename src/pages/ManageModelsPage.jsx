@@ -7,10 +7,12 @@ import {
 } from '../features/models/modelsApi'
 
 import { languageFlags } from '../utils/languages'
+import { useTranslation } from 'react-i18next'
 
 import Layout from '../components/Layout'
 
 const ManageModelsPage = () => {
+	const { t } = useTranslation()
 	const [url, setUrl] = useState('')
 	const [name, setName] = useState('')
 	const [language, setLanguage] = useState('')
@@ -53,9 +55,7 @@ const ManageModelsPage = () => {
 		try {
 			await saveModelMutation({ url, name, language }).unwrap()
 		} catch (err) {
-			console.log(
-				'Something went wrong while saveing the model. Please, try again later'
-			)
+			console.log(t('save_model_error'))
 		}
 	}
 
@@ -66,17 +66,12 @@ const ManageModelsPage = () => {
 				data: { url, name, language },
 			}).unwrap()
 		} catch (err) {
-			console.log(
-				'Something went wrong while updating the model. Please, try again later'
-			)
+			console.log(t('update_model_error'))
 		}
 	}
 
 	const handleDeleteModel = (id) => {
-		if (
-			id &&
-			window.confirm('Are you sure you want to delete this model?')
-		) {
+		if (id && window.confirm(t('delete_model_confirm'))) {
 			deleteModel(id)
 		}
 	}
@@ -85,9 +80,7 @@ const ManageModelsPage = () => {
 		try {
 			await deleteModelMutation(id).unwrap()
 		} catch (err) {
-			console.log(
-				'Something went wrong while deleting the model. Please, try again later'
-			)
+			console.log(t('delete_model_error'))
 		}
 	}
 
@@ -95,7 +88,7 @@ const ManageModelsPage = () => {
 		<Layout>
 			<div className='flex-1 flex flex-col items-center justify-center gap-6 bg-background p-4'>
 				<h2 className='text-2xl font-semibold text-primary'>
-					Manage Speech Models
+					{t('manage_models')}
 				</h2>
 
 				<div className='max-w-3xl w-full mb-4 flex flex-col text-center bg-primary-text rounded-lg shadow-md p-4'>
@@ -109,7 +102,7 @@ const ManageModelsPage = () => {
 								value={url}
 								required
 								onChange={(e) => setUrl(e.target.value)}
-								placeholder='Model URL'
+								placeholder={t('model_url_placeholder')}
 								className='appearance-none rounded-sm relative block w-full px-3 py-2 border border-secondary placeholder-secondary text-secondary-text focus:outline-none focus:ring-accent focus:border-accent sm:text-sm'
 							/>
 						</div>
@@ -120,7 +113,7 @@ const ManageModelsPage = () => {
 								value={name}
 								required
 								onChange={(e) => setName(e.target.value)}
-								placeholder='Model name'
+								placeholder={t('model_name_placeholder')}
 								className='appearance-none rounded-sm relative block w-full px-3 py-2 border border-secondary placeholder-secondary text-secondary-text focus:outline-none focus:ring-accent focus:border-accent sm:text-sm'
 							/>
 						</div>
@@ -131,7 +124,7 @@ const ManageModelsPage = () => {
 								value={language}
 								required
 								onChange={(e) => setLanguage(e.target.value)}
-								placeholder='Supported language. Two letter ISO code'
+								placeholder={t('model_language_placeholder')}
 								className='appearance-none rounded-sm relative block w-full px-3 py-2 border border-secondary placeholder-secondary text-secondary-text focus:outline-none focus:ring-accent focus:border-accent sm:text-sm'
 							/>
 							<span className='absolute right-4'>
@@ -145,13 +138,13 @@ const ManageModelsPage = () => {
 									type='submit'
 									className='w-full flex justify-center py-2 px-4 border border-primary text-md font-medium rounded-md text-primary bg-background hover:text-background hover:border-accent hover:bg-accent focus:outline-none'
 								>
-									Update
+									{t('update')}
 								</button>
 								<button
 									onClick={handleCancel}
 									className='w-full flex justify-center py-2 px-4 border border-transparent text-md font-medium rounded-md text-primary-text bg-primary hover:bg-accent focus:outline-none'
 								>
-									Cancel
+									{t('cancel')}
 								</button>
 							</div>
 						) : (
@@ -159,7 +152,7 @@ const ManageModelsPage = () => {
 								type='submit'
 								className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-md font-medium rounded-md text-primary-text bg-primary hover:bg-accent focus:outline-none'
 							>
-								Create
+								{t('create')}
 							</button>
 						)}
 					</form>
@@ -169,7 +162,7 @@ const ManageModelsPage = () => {
 					{isLoading && (
 						<div className='text-center py-4'>
 							<p className='text-lg text-gray-500'>
-								Loading models...
+								{t('loading_models')}
 							</p>
 						</div>
 					)}
@@ -177,7 +170,7 @@ const ManageModelsPage = () => {
 					{error && (
 						<div className='text-center py-4'>
 							<p className='text-lg text-gray-500'>
-								Something went wrong. Please, try again later.
+								{t('loading_models_error')}
 							</p>
 						</div>
 					)}
@@ -185,7 +178,7 @@ const ManageModelsPage = () => {
 					{isSuccess && (!models || models.length === 0) && (
 						<div className='text-center py-4'>
 							<p className='text-lg text-gray-500'>
-								No models found
+								{t('no_models')}
 							</p>
 						</div>
 					)}
@@ -212,7 +205,7 @@ const ManageModelsPage = () => {
 											}
 											className='flex justify-center py-2 px-4 border border-primary text-md font-medium rounded-md text-primary bg-background hover:text-background hover:border-accent hover:bg-accent focus:outline-none'
 										>
-											Update
+											{t('update')}
 										</button>
 
 										<button
@@ -224,7 +217,7 @@ const ManageModelsPage = () => {
 												handleDeleteModel(model.id)
 											}
 										>
-											Delete
+											{t('delete')}
 										</button>
 									</div>
 								</li>

@@ -7,8 +7,10 @@ import {
 
 import Layout from '../components/Layout'
 import HistoryRecord from '../components/HistoryRecord'
+import { useTranslation } from 'react-i18next'
 
 const HistoryPage = () => {
+	const { t } = useTranslation()
 	const [currentPage, setCurrentPage] = useState(1)
 	const [records, setRecords] = useState([])
 	const [hasMore, setHasMore] = useState(true)
@@ -32,27 +34,8 @@ const HistoryPage = () => {
 		}
 	}
 
-	const handleDeleteHistory = async (id) => {
-		if (!window.confirm('Are you sure you want to delete history?')) {
-			return
-		}
-
-		try {
-			await deleteHistoryMutation().unwrap()
-			refetch()
-		} catch (err) {
-			console.log(
-				'Something went wrong while deleting history. Please, try again later'
-			)
-		}
-	}
-
 	const handleDeleteHistoryRecord = async (id) => {
-		if (
-			!window.confirm(
-				'Are you sure you want to delete this history record?'
-			)
-		) {
+		if (!window.confirm(t('delete_history_record_confirm'))) {
 			return
 		}
 
@@ -61,9 +44,7 @@ const HistoryPage = () => {
 			setRecords([])
 			refetch()
 		} catch (err) {
-			console.log(
-				'Something went wrong while deleting history record. Please, try again later'
-			)
+			console.log(t('delete_history_record_error'))
 		}
 	}
 
@@ -71,14 +52,14 @@ const HistoryPage = () => {
 		<Layout>
 			<div className='overflow-y-auto flex-1 flex flex-col items-center justify-center gap-6 bg-background p-4'>
 				<h2 className='text-2xl font-semibold text-primary'>
-					Synthesis History
+					{t('synthesis_history')}
 				</h2>
 
 				<div className='max-w-2xl w-full'>
 					{isLoading && (
 						<div className='text-center py-4'>
 							<p className='text-lg text-gray-500'>
-								Loading history...
+								{t('loading_history')}
 							</p>
 						</div>
 					)}
@@ -86,7 +67,7 @@ const HistoryPage = () => {
 					{error && (
 						<div className='text-center py-4'>
 							<p className='text-lg text-gray-500'>
-								Something went wrong. Please, try again later.
+								{t('loading_history_error')}
 							</p>
 						</div>
 					)}
@@ -94,7 +75,7 @@ const HistoryPage = () => {
 					{isSuccess && (!records || records.length === 0) && (
 						<div className='text-center py-4'>
 							<p className='text-lg text-gray-500'>
-								No synthesis records found
+								{t('no_history_records')}
 							</p>
 						</div>
 					)}
@@ -115,8 +96,10 @@ const HistoryPage = () => {
 
 							<div className='flex flex-col justify-between items-center gap-4 mt-4'>
 								<span className='text-sm font-medium text-gray-500'>
-									Showing {records.length} of{' '}
-									{data.totalRecords} records
+									{t('showing_records', {
+										count: records.length,
+										total: data.totalRecords,
+									})}
 								</span>
 
 								{hasMore && (
@@ -125,7 +108,9 @@ const HistoryPage = () => {
 										disabled={isLoading}
 										className='text-md text-white bg-primary hover:bg-accent disabled:bg-gray-300 disabled:cursor-not-allowed rounded px-4 py-2'
 									>
-										{isLoading ? 'Loading...' : 'Load More'}
+										{isLoading
+											? t('loading_history')
+											: t('load_more')}
 									</button>
 								)}
 							</div>

@@ -6,7 +6,7 @@ import {
 
 import { logout } from '../features/auth/authSlice'
 
-const SERVER_URL = 'http://localhost:8080/v1/'
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 const baseQuery = fetchBaseQuery({
 	baseUrl: SERVER_URL,
@@ -34,6 +34,7 @@ const baseQueryWrapper = async (args, api, extraOptions) => {
 export const apiSlice = createApi({
 	reducerPath: 'api',
 	baseQuery: baseQueryWrapper,
+	tagTypes: ['History', 'Model'],
 	keepUnusedDataFor: 0,
 	endpoints: (builder) => ({}),
 })

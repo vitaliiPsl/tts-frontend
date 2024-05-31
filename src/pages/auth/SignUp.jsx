@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSignUpMutation } from '../../features/auth/authApi'
 import { validatePassword } from '../../utils/validator'
+import { useTranslation } from 'react-i18next'
 
 import { useNavigate, Link } from 'react-router-dom'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
@@ -11,6 +12,7 @@ import Tooltip from '../../components/Tooltip'
 import Layout from '../../components/Layout'
 
 const SignUp = () => {
+	const { t } = useTranslation()
 	const auth = useSelector((state) => state.auth)
 
 	const [username, setUsername] = useState('')
@@ -44,12 +46,12 @@ const SignUp = () => {
 		e.preventDefault()
 
 		if (!username || username.length === 0) {
-			setError('You need to provide your username')
+			setError(t('signup_page.provide_username'))
 			return
 		}
 
 		if (!email || email.length === 0) {
-			setError('You need to provide your email')
+			setError(t('signup_page.provide_email'))
 			return
 		}
 
@@ -69,8 +71,7 @@ const SignUp = () => {
 				state: { email: user.email },
 			})
 		} catch (err) {
-			console.error('Failed to sign up:', err)
-			setError('Failed to sign up. Please, try again later')
+			setError(t('signup_page.signup_failed'))
 		}
 	}
 
@@ -92,7 +93,7 @@ const SignUp = () => {
 					<div className='max-w-md w-full space-y-8'>
 						<div>
 							<h1 className='mt-6 text-center text-3xl font-extrabold text-secondary-text'>
-								Sign Up
+								{t('signup_page.sign_up')}
 							</h1>
 						</div>
 
@@ -106,7 +107,7 @@ const SignUp = () => {
 										htmlFor='username'
 										className='text-secondary-text block text-sm font-bold mb-2'
 									>
-										Username
+										{t('signup_page.username')}
 									</label>
 									<input
 										id='username'
@@ -116,7 +117,9 @@ const SignUp = () => {
 										spellCheck='false'
 										required
 										className='appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary-text placeholder-secondary-text text-secondary-text focus:outline-none focus:ring-accent focus:border-accent sm:text-sm'
-										placeholder='Enter your username'
+										placeholder={t(
+											'signup_page.enter_your_username'
+										)}
 										value={username}
 										onChange={(e) =>
 											setUsername(e.target.value)
@@ -128,7 +131,7 @@ const SignUp = () => {
 										htmlFor='email'
 										className='text-secondary-text block text-sm font-bold mb-2'
 									>
-										Email address
+										{t('signup_page.email_address')}
 									</label>
 									<input
 										id='email'
@@ -138,7 +141,9 @@ const SignUp = () => {
 										spellCheck='false'
 										required
 										className='appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary-text placeholder-secondary-text text-secondary-text focus:outline-none focus:ring-accent focus:border-accent sm:text-sm'
-										placeholder='Enter your email'
+										placeholder={t(
+											'signup_page.enter_your_email'
+										)}
 										value={email}
 										onChange={(e) =>
 											setEmail(e.target.value)
@@ -150,11 +155,11 @@ const SignUp = () => {
 										htmlFor='password'
 										className='text-secondary-text block text-sm font-bold mb-2 relative'
 									>
-										Password
+										{t('signup_page.password')}
 										<Tooltip
-											message={
-												'Your password must be at least 8 characters long, include uppercase and lowercase letters, a number, and a special character.'
-											}
+											message={t(
+												'signup_page.password_tooltip'
+											)}
 										/>
 									</label>
 									<div className='relative'>
@@ -170,7 +175,9 @@ const SignUp = () => {
 											spellCheck='false'
 											required
 											className='appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary-text placeholder-secondary-text text-secondary-text focus:outline-none focus:ring-accent focus:border-accent sm:text-sm'
-											placeholder='Enter your password'
+											placeholder={t(
+												'signup_page.enter_your_password'
+											)}
 											value={password}
 											onChange={handlePasswordChange}
 										/>
@@ -203,7 +210,7 @@ const SignUp = () => {
 									type='submit'
 									className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-md font-medium rounded-md text-primary-text bg-primary hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent'
 								>
-									Sign Up
+									{t('signup_page.sign_up_button')}
 								</button>
 							</div>
 						</form>
@@ -211,7 +218,7 @@ const SignUp = () => {
 						{/* SSO Block */}
 						<div className='mt-4 flex flex-col items-center gap-4'>
 							<p className='text-center text-secondary-text'>
-								Or sign up with
+								{t('signup_page.sign_up_with')}
 							</p>
 							{/* SSO Options */}
 							<div className='flex justify-center items-center gap-4'>
@@ -230,12 +237,12 @@ const SignUp = () => {
 						{/* Sign in link */}
 						<div className='text-center mt-4'>
 							<p className='text-secondary-text'>
-								Already have an account?
+								{t('signup_page.already_have_account')}
 								<Link
 									to='/auth/signin'
 									className='text-accent ml-2 hover:underline'
 								>
-									Sign In
+									{t('signup_page.sign_in')}
 								</Link>
 							</p>
 						</div>

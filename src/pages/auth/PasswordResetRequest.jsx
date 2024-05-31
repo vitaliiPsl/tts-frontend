@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 
-import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
+import { Link } from 'react-router-dom'
 import Layout from '../../components/Layout'
 import { useSendPasswordResetEmailMutation } from '../../features/auth/authApi'
 
 const PasswordResetRequest = () => {
+	const { t } = useTranslation()
 	const [email, setEmail] = useState('')
 	const [error, setError] = useState('')
 	const [message, setMessage] = useState('')
@@ -14,17 +16,13 @@ const PasswordResetRequest = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
-        setError(null)
-        
+		setError(null)
+
 		try {
 			await sendEmail(email).unwrap()
-			setMessage(
-				'If an account with that email exists, we sent an email to reset your password.'
-			)
+			setMessage(t('password_reset_request_page.reset_email_sent'))
 		} catch (err) {
-			setError(
-				'Failed to send password reset email. Please, try again later.'
-			)
+			setError(t('password_reset_request_page.reset_email_failed'))
 		}
 	}
 
@@ -35,7 +33,9 @@ const PasswordResetRequest = () => {
 					<div className='max-w-md w-full space-y-8'>
 						<div>
 							<h1 className='mt-6 text-center text-3xl font-extrabold text-secondary-text'>
-								Password Reset
+								{t(
+									'password_reset_request_page.password_reset'
+								)}
 							</h1>
 						</div>
 
@@ -49,7 +49,9 @@ const PasswordResetRequest = () => {
 										htmlFor='email'
 										className='text-secondary-text block text-sm font-bold mb-2'
 									>
-										Email address
+										{t(
+											'password_reset_request_page.email_address'
+										)}
 									</label>
 									<input
 										id='email'
@@ -58,7 +60,9 @@ const PasswordResetRequest = () => {
 										autoComplete='email'
 										required
 										className='appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary placeholder-secondary text-secondary-text focus:outline-none focus:ring-accent focus:border-accent sm:text-sm'
-										placeholder='Enter your email'
+										placeholder={t(
+											'password_reset_request_page.enter_your_email'
+										)}
 										value={email}
 										onChange={(e) =>
 											setEmail(e.target.value)
@@ -72,7 +76,9 @@ const PasswordResetRequest = () => {
 									type='submit'
 									className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-md font-medium rounded-md text-primary-text bg-primary hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent'
 								>
-									Send Reset Email
+									{t(
+										'password_reset_request_page.send_reset_email'
+									)}
 								</button>
 							</div>
 
@@ -88,12 +94,14 @@ const PasswordResetRequest = () => {
 
 						<div className='text-center mt-4'>
 							<p className='text-secondary-text'>
-								Remember your password?
+								{t(
+									'password_reset_request_page.remember_password'
+								)}
 								<Link
 									to='/auth/signin'
 									className='text-accent ml-2 hover:underline'
 								>
-									Sign in
+									{t('password_reset_request_page.sign_in')}
 								</Link>
 							</p>
 						</div>

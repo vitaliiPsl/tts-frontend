@@ -4,13 +4,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setToken } from '../../features/auth/authSlice'
 import { useSignInMutation } from '../../features/auth/authApi'
 import { validatePassword } from '../../utils/validator'
+import { useTranslation } from 'react-i18next'
 
 import { useNavigate, Link } from 'react-router-dom'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
 import { FaGoogle, FaGithub, FaApple } from 'react-icons/fa'
 import Layout from '../../components/Layout'
 
-const SignUp = () => {
+const SignIn = () => {
+	const { t } = useTranslation()
 	const auth = useSelector((state) => state.auth)
 
 	const [email, setEmail] = useState('')
@@ -43,7 +45,7 @@ const SignUp = () => {
 		e.preventDefault()
 
 		if (!email || email.length === 0) {
-			setError('You need to provide your email')
+			setError(t('signin_page.provide_email'))
 			return
 		}
 
@@ -67,9 +69,9 @@ const SignUp = () => {
 			navigate('/')
 		} catch (err) {
 			if (err.status === 401) {
-				setError('Invalid username or password')
+				setError(t('signin_page.invalid_credentials'))
 			} else {
-				setError('Failed to sign in. Please, try again later')
+				setError(t('signin_page.signin_failed'))
 			}
 		}
 	}
@@ -81,13 +83,12 @@ const SignUp = () => {
 	return (
 		<Layout>
 			<div className='flex-1 flex'>
-				
-                {/* Form Container */}
+				{/* Form Container */}
 				<div className='w-full xl:w-1/2 p-4 flex items-center justify-center'>
 					<div className='max-w-md w-full space-y-8'>
 						<div>
 							<h1 className='mt-6 text-center text-3xl font-extrabold text-secondary-text'>
-								Sign in
+								{t('signin_page.sign_in')}
 							</h1>
 						</div>
 
@@ -101,7 +102,7 @@ const SignUp = () => {
 										htmlFor='email'
 										className='text-secondary-text block text-sm font-bold mb-2'
 									>
-										Email address
+										{t('signin_page.email_address')}
 									</label>
 									<input
 										id='email'
@@ -111,7 +112,9 @@ const SignUp = () => {
 										spellCheck='false'
 										required
 										className='appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary placeholder-secondary text-secondary-text focus:outline-none focus:ring-accent focus:border-accent sm:text-sm'
-										placeholder='Enter your email'
+										placeholder={t(
+											'signin_page.enter_your_email'
+										)}
 										value={email}
 										onChange={(e) =>
 											setEmail(e.target.value)
@@ -123,7 +126,7 @@ const SignUp = () => {
 										htmlFor='password'
 										className='text-secondary-text block text-sm font-bold mb-2 relative'
 									>
-										Password
+										{t('signin_page.password')}
 									</label>
 									<div className='relative'>
 										<input
@@ -138,7 +141,9 @@ const SignUp = () => {
 											spellCheck='false'
 											required
 											className='appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary placeholder-secondary text-secondary-text focus:outline-none focus:ring-accent focus:border-accent sm:text-sm'
-											placeholder='Enter your password'
+											placeholder={t(
+												'signin_page.enter_your_password'
+											)}
 											value={password}
 											onChange={handlePasswordChange}
 										/>
@@ -171,7 +176,7 @@ const SignUp = () => {
 									type='submit'
 									className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-md font-medium rounded-md text-primary-text bg-primary hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent'
 								>
-									Sign In
+									{t('signin_page.sign_in_button')}
 								</button>
 							</div>
 						</form>
@@ -179,12 +184,12 @@ const SignUp = () => {
 						{/* Forgot Password Link */}
 						<div className='text-center mt-4'>
 							<p className='text-secondary-text'>
-								Forgot your password?
+								{t('signin_page.forgot_password')}
 								<Link
 									to='/auth/password-reset-request'
 									className='text-accent ml-2 hover:underline'
 								>
-									Reset it
+									{t('signin_page.reset_it')}
 								</Link>
 							</p>
 						</div>
@@ -192,7 +197,7 @@ const SignUp = () => {
 						{/* SSO Block */}
 						<div className='mt-4 flex flex-col items-center gap-4'>
 							<p className='text-center text-secondary-text'>
-								Or sign in with
+								{t('signin_page.sign_in_with')}
 							</p>
 							{/* SSO Options */}
 							<div className='flex justify-center items-center gap-4'>
@@ -211,12 +216,12 @@ const SignUp = () => {
 						{/* Sign up link */}
 						<div className='text-center mt-4'>
 							<p className='text-secondary-text'>
-								Don't have account?
+								{t('signin_page.no_account')}
 								<Link
 									to='/auth/signup'
 									className='text-accent ml-2 hover:underline'
 								>
-									Sign Up
+									{t('signin_page.sign_up')}
 								</Link>
 							</p>
 						</div>
@@ -233,4 +238,4 @@ const SignUp = () => {
 	)
 }
 
-export default SignUp
+export default SignIn

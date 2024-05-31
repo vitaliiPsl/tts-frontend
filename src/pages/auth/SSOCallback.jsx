@@ -6,10 +6,12 @@ import { useNavigate } from 'react-router-dom'
 
 import { useParams, useSearchParams } from 'react-router-dom'
 import { useSignInWithSSOMutation } from '../../features/auth/authApi'
+import { useTranslation } from 'react-i18next'
 
 import Layout from '../../components/Layout'
 
 const SSOCallback = () => {
+	const { t } = useTranslation()
 	const auth = useSelector((state) => state.auth)
 
 	let { provider } = useParams()
@@ -39,12 +41,12 @@ const SSOCallback = () => {
 		try {
 			let data = await signInWithSSO({ provider, code }).unwrap()
 
-            let token = data?.token
+			let token = data?.token
 			dispatch(setToken(token))
 
 			navigate('/')
 		} catch (err) {
-			setError('Failed to sign in. Please, try again later')
+			setError(t('ssocallback_page.signin_failed'))
 		}
 	}
 
@@ -55,10 +57,10 @@ const SSOCallback = () => {
 				<div className='w-full xl:w-1/2 p-4 flex items-center justify-center'>
 					<div className='max-w-md w-full space-y-8'>
 						<h2 className='text-center text-3xl font-extrabold text-secondary-gray'>
-							SSO sign in
+							{t('ssocallback_page.sso_sign_in')}
 						</h2>
 						<p className='text-center'>
-							Handling SSO callback, please wait...
+							{t('ssocallback_page.handling_callback')}
 						</p>
 						<div className='text-center p-2'>
 							{error && (
