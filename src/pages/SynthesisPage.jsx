@@ -70,7 +70,7 @@ const SynthesisPage = () => {
 
 	return (
 		<Layout>
-			<div className='flex-1 flex flex-col items-center justify-center gap-6 bg-background p-4'>
+			<div className='flex-1 flex flex-col items-center justify-center gap-6 p-4'>
 				{/* Model selection list */}
 				<div className='max-w-3xl w-full text-center flex flex-col gap-3'>
 					<h2 className='text-2xl font-semibold text-primary'>

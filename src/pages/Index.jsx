@@ -13,7 +13,7 @@ const Index = () => {
 
 	return (
 		<Layout>
-			<div className='p-4 flex-1 flex flex-col items-center justify-center bg-white text-secondary'>
+			<div className='p-4 flex-1 flex flex-col items-center justify-center text-secondary'>
 				<h1 className='text-5xl font-bold mb-6 text-center'>
 					{user && user.username
 						? t('welcome_user', { username: user.username })
