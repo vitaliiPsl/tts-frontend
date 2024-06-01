@@ -111,7 +111,7 @@ const SignIn = () => {
 										autoComplete='email'
 										spellCheck='false'
 										required
-										className='appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary placeholder-secondary text-secondary-text focus:outline-none focus:ring-accent focus:border-accent sm:text-sm'
+										className='appearance-none rounded-md relative block w-full px-3 py-2 border border-secondary placeholder-secondary text-secondary-text focus:outline-none focus:ring-accent focus:border-accent sm:text-sm'
 										placeholder={t(
 											'signin_page.enter_your_email'
 										)}
@@ -140,7 +140,7 @@ const SignIn = () => {
 											autoComplete='current-password'
 											spellCheck='false'
 											required
-											className='appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary placeholder-secondary text-secondary-text focus:outline-none focus:ring-accent focus:border-accent sm:text-sm'
+											className='appearance-none rounded-md relative block w-full px-3 py-2 border border-secondary placeholder-secondary text-secondary-text focus:outline-none focus:ring-accent focus:border-accent sm:text-sm'
 											placeholder={t(
 												'signin_page.enter_your_password'
 											)}
